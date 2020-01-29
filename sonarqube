@@ -1,0 +1,41 @@
+stage('Sonar') {
+
+{{   stage('Sonar') { }}
+
+{{      steps { withSonarQubeEnv('localsonar', ) { }}
+
+{{         bat 'mvn -f ssui/core/pom.xml org.jacoco:jacoco-maven-plugin:prepare-agent clean install -Dmaven.test.skip=false -Dmaven.test.failure.ignore=false sonar:sonar' }}
+
+{{         } }}
+
+{{      }}}
+
+   }
+
+{{stage("Quality Gate"){ }}
+
+{{   steps{ }}
+
+{{      script{ }}
+
+{{         timeout(time: 1, unit: 'HOURS') { }}
+
+{{            sh  "sleep 180" }}
+
+{{            def qg = waitForQualityGate() }}
+
+{{            if (qg.status != 'OK') }}{{{ }}
+
+{{               error "Pipeline aborted due to quality gate failure: ${qg.status}" }}
+
+{{             } }}
+
+{{          } }}
+
+{{       } }}
+
+{{      } }}
+
+   }  
+
+{{}   }}
